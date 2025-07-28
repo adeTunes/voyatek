@@ -1,4 +1,4 @@
-import { Cancel, Clock, Location, Naira, Star } from "../icons";
+import { Cancel, Clock, Location, Star } from "../icons";
 import { Carousel } from "./carousel";
 import { useItinerary } from "@/src/context/ItineraryContext";
 import { Check, CircleChevronDown, CircleChevronUp, Plus } from "lucide-react";
@@ -97,7 +97,7 @@ export const ActivityCard = ({
           <div className="px-6 py-[14px] flex items-center justify-between border-y border-y-neutral-400">
             <div className="flex items-center gap-3">
               <span className="text-black-secondary font-medium">
-                What's Included:
+                What&apos;s Included:
               </span>
               <span className="text-black-secondary font-medium">
                 {whatsIncluded}

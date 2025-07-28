@@ -167,7 +167,7 @@ function AsyncSelect({
           )}
           {!loading && options.length === 0 && inputValue.length >= 2 && (
             <div className="dropdown-item no-results">
-              No results found for "{inputValue}"
+              No results found for &quot;{inputValue}&quot;
             </div>
           )}
           {!loading && inputValue.length < 2 && (
@@ -227,8 +227,6 @@ function DatePicker({
 }
 
 export default function SearchModal({ type, open, onClose }: SearchModalProps) {
-  if (!open) return null;
-
   const [search, setSearch] = useState<any>({});
 
   // Form state for better UX
@@ -249,6 +247,18 @@ export default function SearchModal({ type, open, onClose }: SearchModalProps) {
   });
 
   // Default params for initial fetch
+  const { data, isLoading, error, refetch } = useQuery<any[], Error>({
+    queryKey: [type, search],
+    queryFn: async () => {
+      const params = Object.keys(search).length ? search : defaultParams[type];
+      const res = await axios.get(apiRoute, { params });
+      return res.data;
+    },
+    enabled: open,
+  });
+
+  if (!open) return null;
+
   const defaultParams = {
     flight: {
       from: "LOS.AIRPORT",
@@ -274,16 +284,6 @@ export default function SearchModal({ type, open, onClose }: SearchModalProps) {
       : type === "hotel"
       ? "/api/hotels"
       : "/api/activities";
-
-  const { data, isLoading, error, refetch } = useQuery<any[], Error>({
-    queryKey: [type, search],
-    queryFn: async () => {
-      const params = Object.keys(search).length ? search : defaultParams[type];
-      const res = await axios.get(apiRoute, { params });
-      return res.data;
-    },
-    enabled: open,
-  });
 
   // Handle form submission
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
@@ -374,8 +374,6 @@ export default function SearchModal({ type, open, onClose }: SearchModalProps) {
       id: option.id,
     }));
   };
-
-  if (!open) return null;
 
   return (
     <div className="modal-backdrop">
